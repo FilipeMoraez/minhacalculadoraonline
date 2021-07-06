@@ -71,3 +71,7 @@ textarea{
 .numbers:active{
     opacity: 0.5;
 }
+.calc{
+    width: 42px;
+    height:42px;
+}
