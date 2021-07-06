@@ -35,7 +35,9 @@ function digit(e){
         number(digito);
     }if(digito == '*' || digito == 'x' ||digito == 'X'){
         operation("X");
-    }if(digito == "+" || digito == "-" || digito == "-" || digito == "/"){
+    }if(digito == "/"){
+        operation("÷");
+    }if(digito == "+" || digito == "-" || digito == "-"){
         operation(digito);
     }if(digito == 'Backspace'){
         var texto = $('#tela').val();
@@ -127,7 +129,7 @@ function calcula(privalor, segvalor, operacao){
       if(operacao == '+'){
             return parseFloat(privalor) + parseFloat(segvalor);
       }
-      if(operacao == '/'){
+      if(operacao == '/' || operacao == '÷'){
             return parseFloat(privalor) / parseFloat(segvalor);
       }
 }
