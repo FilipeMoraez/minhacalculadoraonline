@@ -1,76 +1,116 @@
 var ope = null;
 
-
 function init(){
-    
-    $("#tela").val("0");
     $('#ac').click(function(e){
-        $('.op').html("");
-        $("#tela").val("0");
-        op = null;
-        ope=null;
-
-
+        ac(e);
     });
+
     $('#limpa').click(function(e){
-                       $('.op').html("");
-                       $("#tela").val("0");
-                       $('#historico').html("");
-                       op = null;
-                       ope=null;
+        limpa(e);       
      });
 
     $('.numbers').click(function(e){
-          escreveTela(e.target.value);
-          scrollTela();
+        number(e.target.value);
     })
 
     $('.operation').click(function(e){
-
-        if(ope != null){
-            return;
-        }
-
-        scrollTela();
-
-        var atual = $('#tela').val();
-        if(atual == 0 || atual == ""){
-            return;
-        }
-
-        $('.op').html(e.target.value);
-
-        var operacao = e.target.value;
-
-
-        if(ope != null){
-               $('.equal').click();
-        }
-
-        ope = operacao;
-
-         $("#historico").append("<div>" + $("#tela").val() + "</div>");
-         $("#tela").val("");
-
-
-        scrollTela();
+        operation(e.target.value);
     })
 
     $('.equal').click(function(e){
-           var privalor = $('#historico div').last().html().replace(ope, '');
-           var segvalor = $("#tela").val();
-           $("#historico").append("<div>" + $("#tela").val() + "</div>");
-
-           var resultado = calcula(privalor, segvalor, ope);
-
-
-           scrollTela();
-           $('#tela').val(resultado);
-            ope = null;
-            $('.op').html("");
+        equal(e);
     })
 
+    $( "body" ).keydown(function(e) {
+        digit(e);
+      });
+
 }
+function digit(e){
+    var digito = e.originalEvent.key;
+    if(isNumber(digito) || digito == 0){
+        number(digito);
+    }if(digito == '*' || digito == 'X'){
+        operation("X");
+    }if(digito == "+" || digito == "-" || digito == "-" || digito == "/"){
+        operation(digito);
+    }if(digito == 'Backspace'){
+        var texto = $('#tela').val();
+        $('#tela').val(texto.substring(0,texto.length-1));
+        if($('#tela').val()=="")$('#tela').val(0);
+    }if(digito == "Enter"){
+        equal(digito);
+    }
+    console.log(e.originalEvent.key);
+
+}
+
+function operation(operacao){
+    var valor =$("#tela").val();
+    if(ope != null && ope != operacao){
+        ope = operacao;
+        $('.op').html(operacao);
+    }if (isValid(ope) && isValid(valor)){
+        equal(operacao);
+        processOperation(operacao);
+    }else{
+        processOperation(operacao);
+    }
+}
+
+function ac(e){
+    $('.op').html("");
+    $("#tela").val("0");
+    op = null;
+    ope = null;
+}
+function limpa(e){
+    $('.op').html("");
+    $("#tela").val("0");
+    $('#historico').html("");
+    op = null;
+    ope=null;
+}
+function number(e){
+    escreveTela(e);
+    atualizaTela();
+}
+function processOperation(operacao){
+    if(ope != null) return;
+
+    atualizaTela();
+
+    var atual = $('#tela').val();
+    if(atual == 0 || atual == ""){
+        return;
+    }
+
+    $('.op').html(operacao);
+
+    if(ope != null) $('.equal').click();
+
+    ope = operacao;
+
+     $("#historico").append("<div>" + $("#tela").val() + "</div>");
+     $("#tela").val("");
+
+    atualizaTela();
+}
+
+function equal(e){
+    var privalor = $('#historico div').last().html().replace(ope, '');
+    var segvalor = $("#tela").val();
+    $("#historico").append("<div>" + $("#tela").val() + "</div>");
+
+    var resultado = calcula(privalor, segvalor, ope);
+
+    atualizaTela();
+    $('#tela').val(resultado);
+     ope = null;
+     $('.op').html("");
+}
+
+
 function calcula(privalor, segvalor, operacao){
       if(operacao == "X"){
            return parseFloat(privalor) * parseFloat(segvalor);
@@ -94,20 +134,27 @@ function escreveTela(texto){
     }else{
         $("#tela").val(escrito + texto);
     }
-    scrollTela();
+    atualizaTela();
 }
 
 
-
-
-function scrollTela(){
+function atualizaTela(){
     var objDiv = document.getElementById("historico");
     objDiv.scrollTop = objDiv.scrollHeight;
 }
+function isValid(e){
+    return e != null && e != 0 & e != '';
+}
 
 
 
-
-
+function isNumber(value) {
+   try{
+        var result = value/value;
+        return result == 1;
+   }catch(e){
+       return false;
+   }
+}
 
 init();

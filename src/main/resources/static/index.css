@@ -68,3 +68,6 @@ textarea{
 .footer{
     height:80px;
 }
+.numbers:active{
+    opacity: 0.5;
+}
