@@ -23,14 +23,17 @@ function init(){
 
     $( "body" ).keydown(function(e) {
         digit(e);
-      });
+    });
+    $('.point').click(function(e){
+        point();
+    })
 
 }
 function digit(e){
     var digito = e.originalEvent.key;
     if(isNumber(digito) || digito == 0){
         number(digito);
-    }if(digito == '*' || digito == 'X'){
+    }if(digito == '*' || digito == 'x' ||digito == 'X'){
         operation("X");
     }if(digito == "+" || digito == "-" || digito == "-" || digito == "/"){
         operation(digito);
@@ -40,11 +43,14 @@ function digit(e){
         if($('#tela').val()=="")$('#tela').val(0);
     }if(digito == "Enter"){
         equal(digito);
+    }if(digito == ','){
+        point();
     }
-    console.log(e.originalEvent.key);
-
 }
 
+function point(){
+    $('#tela').val(parseFloat($('#tela').val()).toFixed(1));
+}
 function operation(operacao){
     var valor =$("#tela").val();
     if(ope != null && ope != operacao){
@@ -129,8 +135,10 @@ function calcula(privalor, segvalor, operacao){
 
 function escreveTela(texto){
     var escrito = $("#tela").val();
-    if(escrito == 0){
+    if(escrito == 0){   
         $("#tela").val(texto);
+    }else if(escrito.indexOf('.0')>0 && texto != '0'){
+        $("#tela").val(escrito.substr(0, escrito.length-1)+texto);
     }else{
         $("#tela").val(escrito + texto);
     }
@@ -145,7 +153,6 @@ function atualizaTela(){
 function isValid(e){
     return e != null && e != 0 & e != '';
 }
-
 
 
 function isNumber(value) {
