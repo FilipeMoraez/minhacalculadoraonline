@@ -1,4 +1,6 @@
 var ope = null;
+var free = true;
+var path = window.location.pathname.substring(4,window.location.pathname.length);
 
 function init(){
     $('#ac').click(function(e){
@@ -28,6 +30,52 @@ function init(){
         point();
     })
 
+    $('.btn').click(function(e){
+       workspace();
+    });
+
+    $('#cacheAgora').click(function(e){
+        cache();
+    })
+    $('.workspace').keydown(function(e) {
+       onEnter(e.originalEvent.key);
+    })
+
+    if(window.location.href.indexOf("/my/")>=0){
+        $('.workspace').val(path);
+        $('.txt-bemvindo').html('Bem vindo a área de trabalho, ' + path + ' seu historico será mantido');
+    }else{
+        $('.txt-bemvindo').remove();
+    }
+
+    cache();
+
+}
+
+$(".workspace").on({
+  keydown: function(e) {
+    if (e.which === 32)
+      return false;
+  },
+  change: function() {
+    this.value = this.value.replace(/\s/g, "");
+  }
+});
+
+
+function onEnter(digito){
+        if(digito == 'Enter'){
+            workspace();
+        }
+        if(digito == " "){
+            return;
+        }
+}
+function workspace(){
+    var location = $('.workspace').val();
+    if(location != ''){
+            window.location.href = window.location.origin + '/my/' + location ;
+    }
 }
 function digit(e){
     var digito = e.originalEvent.key;
@@ -78,10 +126,13 @@ function limpa(e){
     $('#historico').html("");
     op = null;
     ope=null;
+    clean();
 }
 function number(e){
-    escreveTela(e);
-    atualizaTela();
+    if(free){
+        escreveTela(e);
+        atualizaTela();
+    }
 }
 function processOperation(operacao){
     if(ope != null) return;
@@ -106,31 +157,45 @@ function processOperation(operacao){
 }
 
 function equal(e){
-    var privalor = $('#historico div').last().html().replace(ope, '');
-    var segvalor = $("#tela").val();
-    $("#historico").append("<div>" + $("#tela").val() + "</div>");
+    if(free && $('#historico div').html() != undefined){
+        var privalor = $('#historico div').last().html().replace(ope, '');
+        var segvalor = $("#tela").val();
+        $("#historico").append("<div class='resultline'>"+ $('.op').html() + $("#tela").val() + "</div>");
 
-    var resultado = calcula(privalor, segvalor, ope);
+        calcula(privalor, segvalor, ope);
 
-    atualizaTela();
-    $('#tela').val(resultado);
-     ope = null;
-     $('.op').html("");
+
+     }
 }
 
 
 function calcula(privalor, segvalor, operacao){
-      if(operacao == "X"){
-           return parseFloat(privalor) * parseFloat(segvalor);
-      }
-      if(operacao == '-'){
-           return parseFloat(privalor) - parseFloat(segvalor);
-      }
-      if(operacao == '+'){
-            return parseFloat(privalor) + parseFloat(segvalor);
-      }
-      if(operacao == '/' || operacao == '÷'){
-            return parseFloat(privalor) / parseFloat(segvalor);
+    if(operacao != null){
+      var base = window.location.origin + '/calc/';
+
+          if(operacao == "X")
+                base += 'multiply';
+          else if(operacao == '-')
+                base += 'subtract';
+          else if(operacao == '+')
+                base += 'sum';
+          else if(operacao == '/' || operacao == '÷')
+                base += 'divide';
+
+          $.ajax({
+                      type:'POST',
+                      url:base,
+                      headers :{'Content-Type':'application/json'},
+                      data: JSON.stringify({'first': privalor, 'second': segvalor }),
+                      success : function(e){
+                            atualizaTela();
+                            $('#tela').val(e.result);
+                            $("#historico").append("<div class='result'>"+ e.result + "</div>");
+                            ope = null;
+                            $('.op').html("");
+                            cache();
+                      }
+                 });
       }
 }
 
@@ -165,5 +230,67 @@ function isNumber(value) {
        return false;
    }
 }
+function cache(){
+      var path = window.location.pathname.substring(4,window.location.pathname.length);
+      var base = window.location.origin + '/cache/'+path;
+      var historico = $('#historico').html().trim();
+      if(historico == ''){
+            historico = '-';
+      }
+      free = false;
+       $.ajax({
+            type:'POST',
+            url:base,
+            data:historico,
+            success:function(e){
+                if(e == "-="){
+                    free = true;
+                    return;
+                };
+                atualizaTela();
+                var resposta = e;
+                resposta = resposta.replace("=-", "");
+
+                while(resposta.indexOf("%3C")>=0) resposta = resposta.replace("%3C", "<")
+                while(resposta.indexOf("%3E")>=0) resposta = resposta.replace("%3E", ">");
+                while(resposta.indexOf("%2F")>=0) resposta = resposta.replace("%2F", "/")
+
+                while(resposta.indexOf("%C3%B7")>=0) resposta = resposta.replace("%C3%B7", "÷")
+
+                while(resposta.indexOf("%22")>=0) resposta = resposta.replace("%22", "\"");
+                while(resposta.indexOf("div+")>=0) resposta = resposta.replace("div+", "div ");
+                while(resposta.indexOf("%3D")>=0) resposta = resposta.replace("%3D", "=");
+
+
+                $('#historico').html(resposta);
+                $('#tela').val($('.result').last().html());
+
+                free = true;
+                atualizaTela();
+                atualizaTela();
+
+            }, error: function (error) {
+                  free = true;
+                  console.log(error);
+            }
+      });
+}
+
+function clean(){
+      var path = window.location.pathname.substring(4,window.location.pathname.length);
+      var base = window.location.origin + '/remove/'+path;
+
+       $.ajax({
+            type:'POST',
+            url:base,
+            success:function(e){
+            }, error: function (error) {
+                  console.log(error);
+            }
+      });
+}
+
+
+
 
 init();

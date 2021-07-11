@@ -1,10 +1,10 @@
-.container{
-    margin-top:70px;
+.content{
+    margin-top:90px;
     padding-top:30px;
     background-color:gray;
 }
 
-.container *{
+.content *{
     font-size:27px;
 }
 .row{
@@ -37,6 +37,12 @@ textarea{
 #historico div{
     text-align:right;
 
+}
+.resultline{
+    text-decoration: underline;
+}
+.result{
+    font-weight: bold;
 }
 
 .operation{
@@ -77,4 +83,88 @@ textarea{
 }
 .navbar{
     opacity: 0.8;
+    height:50px;
+}
+.workspace{
+
+    background: transparent;
+    border: 1px solid black;
+    border-radius: 20px;
+    padding:10px;
+    width:350px;
+    height:35px;
+    text-align:left;
+    right: 10px;
+    position: absolute;
+    top:-15px;
+
+}
+.btn{
+  position: absolute;
+  right: 10px;
+  top: -15px;
+  border: 1px solid black;
+  height: 35px;
+  width: 35px;
+  border-radius: 50px;
+  padding: 0px;
+}
+
+.go{
+    position:relative;
+    width: 100%;
+}
+
+
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: black;
+  opacity: 0.9; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: black;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: black;
+}
+
+@media only screen and (max-width: 990px) {
+  .workspace {
+    width:350px;
+    top: -40px;
+  }
+  .btn{
+    top: -40px;
+  }
+}
+
+
+
+@media only screen and (max-width: 700px) {
+  .navbar-brand{
+    font-size:15px !important;
+   }
+  .workspace {
+    font-size:12px !important;
+    width:200px;
+    top: -40px;
+  }
+  .btn{
+    top: -40px;
+  }
+}
+
+.table *{
+    font-size:12px;
+    text-align:left;
+}
+.min-collumn{
+    min-width: 110px;
+}
+.txt-bemvindo{
+    text-align:center;
+    margin-top: 64px;
+    margin-bottom: -83px;
 }

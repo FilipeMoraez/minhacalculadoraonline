@@ -8,21 +8,26 @@
     <meta name="robots" content="all">
     <meta name="author" content="Filipe O Antiqueira">
     <meta name="keywords" content="calculadora online,calculadora,minha calculadora,calculadora online gratis,calculadora online simples,calculadora digital online,calculadora simples online,calculadora online grátis,calculadora gratis online,calculadora virtual online,cálculo online,calculadora grátis online,calculadora calculadora online,calculadora automática online,usar calculadora online,calculadora digital online gratis,calculadora online calculadora online,online calculadora online,calculadora online gratuita,calculadora usar online,calculadora simples online gratis,a minha calculadora,onde está minha calculadora">
-    <link href="bootstrap.min.css" rel="stylesheet">
-    <link href="index.css" rel="stylesheet">
+    <link href="/bootstrap.min.css" rel="stylesheet">
+    <link href="/index.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="calc.png"/>
     <link rel="canonical" href="http://www.minhacalculadoraonline.com">
     <title>Minha Calculadora Online</title>
     <script data-ad-client="ca-pub-6877407001793793" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head>
     <body>
+
+        <h1 class="txt-bemvindo"></h1>
         <nav class="navbar navbar-expand-lg navbar-light bg-light shadow fixed-top">
             <div class="container-fluid">
-                
-                <a class="navbar-brand" href="http://www.minhacalculadoraonline.com"><img class='calc' alt="calculator" src='calc.png'>Minha Calculadora ONLINE</a>
+                <a class="navbar-brand" href="http://www.minhacalculadoraonline.com"><img class='calc' alt="calculator" src='/calc.png'>Minha Calculadora ONLINE</a>
+            </div>
+            <div class="go">
+                <input type="text" class="workspace" placeholder="Ir para minha área de trabalho    ">
+                <input class="btn" type="button" value="ir">
             </div>
         </nav>
-        <div class="container shadow">
+        <div class="container content shadow">
             <div class="row">
                 <div class="form-group">
                     <div class="operation">
@@ -106,30 +111,79 @@
         </div>
 
 
-        <section class="explain">
-            <h1>Minha calculadora pessoal 100% Online</h1>
-            <p>Agora você pode fazer suas contas online tranquilamente, online e 100% de graça.</p>
+        <section class="explain ">
+            <p id="cacheAgora">Notas de versão</p>
+            <div class="container">
+                <p>V1.0.1</p>
 
-            <p>Para entender o funcionamento, basta entender as seguintes teclas:</p>
-            <div class="glos">
-                <p>AC : Limpar tela atual</p>
-                <p>Limpar : Limpar tela atual e histórico</p>
-                <p>÷ : Dividir</p>
-                <p>x : Multiplicar</p>
-                <p>- : Subtrair</p>
-                <p>+ : Somar</p>
-                <p>= : Igual</p>
+                <p>Nessa versão adicionamos serviços REST para calculos online</p>
+
+                <table class="table table-striped">
+                   <tr>
+                       <th>Método</th>
+                       <th class="min-collumn">Requisição</th>
+                       <th class="min-collumn">Resposta</th>
+                       <th>Endpoint</th>
+                   </tr>
+                    <tr>
+                        <th>POST</th>
+                        <th>{ 'first': 10, 'second': 10 }</th>
+                        <th>{ 'result': 20 }</th>
+                        <th>https://www.minhacalculadoraonline.com/calc/sum</th>
+                    </tr>
+                    <tr>
+                        <th>POST</th>
+                        <th>{ 'first': 10, 'second': 10 }</th>
+                        <th>{ 'result': 0 }</th>
+                        <th>https://www.minhacalculadoraonline.com/calc/subtract</th>
+                    </tr>
+                    <tr>
+                        <th>POST</th>
+                        <th>{ 'first': 10, 'second': 10 }</th>
+                        <th>{ 'result': 100 }</th>
+                        <th>https://www.minhacalculadoraonline.com/calc/multiply</th>
+                    </tr>
+                    <tr>
+                        <th>POST</th>
+                        <th>{ 'first': 10, 'second': 10 }</th>
+                        <th>{ 'result': 1 }</th>
+                        <th>https://www.minhacalculadoraonline.com/calc/divide</th>
+                    </tr>
+                </table>
+                <br>
+                <p>Também foi adicionada a possibilidade de criar uma area de trabalho e manter um histórico</p>
+                <br>
+                <p>As seguintes teclas foram adicionadas:</p>
+                <div class="glos">
+                    <p>AC : Limpar tela atual</p>
+                    <p>, : Casa Decimal</p>
+                </div>
             </div>
+            <br/>
+            <div>
+                <p>V1.0.0</p>
+                <p>Agora você pode fazer suas contas online tranquilamente, online e 100% de graça.</p>
 
+                <p>Para entender o funcionamento, basta entender as seguintes teclas:</p>
+                <div class="glos">
+                    <p>AC : Limpar tela atual</p>
+                    <p>Limpar : Limpar tela atual e histórico</p>
+                    <p>÷ : Dividir</p>
+                    <p>x : Multiplicar</p>
+                    <p>- : Subtrair</p>
+                    <p>+ : Somar</p>
+                    <p>= : Igual</p>
+                </div>
+            </div>
         </section>
 
-        <script src="bootstrap.bundle.min.js"></script>
-        <script src="jquery-3.6.0.slim.min.js" ></script>
-        <script src="index.js"></script>
+        <script src="/bootstrap.bundle.min.js"></script>
+        <script src="/jquery-3.6.0.min.js" ></script>
+        <script src="/index.js"></script>
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light footer">
             <div class="container-fluid">
-                <a class="navbar-brand left-brand" href="http://www.minhacalculadoraonline.com">Minha Calculadora Online - v1.0.0</a>
+                <a class="navbar-brand left-brand" href="http://www.minhacalculadoraonline.com">Minha Calculadora Online - v1.0.1</a>
             </div>
         </nav>
     </body>
